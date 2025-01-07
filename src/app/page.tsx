@@ -1,6 +1,6 @@
 'use client'
 
-import { CompetitiveAnalysis } from '@/components/competitive-analysis'
+import CompetitiveAnalysis from '../components/competitive-analysis'
 
 export default function Home() {
   return (
