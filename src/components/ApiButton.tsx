@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 
 const ApiButton = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState<string | null>(null);
-  const [inputValue, setInputValue] = useState('');  // New state for input
+  const [inputValue, setInputValue] = useState('');
 
   const handleClick = async () => {
     if (!inputValue.trim()) {
@@ -19,7 +20,6 @@ const ApiButton = () => {
     setError(null);
     
     try {
-      // Now we'll use the input value in our API call
       const response = await fetch(`https://api.example.com/data?query=${inputValue}`);
       const data = await response.json();
       setResponse(data);
@@ -33,12 +33,11 @@ const ApiButton = () => {
   return (
     <div className="p-4 space-y-4">
       <div className="flex flex-col gap-2">
-        <input
+        <Input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter your search..."
-          className="p-2 border rounded-md w-full"
         />
         
         <Button 
