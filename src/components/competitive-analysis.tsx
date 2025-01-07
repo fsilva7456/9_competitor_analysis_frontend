@@ -30,6 +30,10 @@ type Competitor = {
   competitor_threats?: string
 }
 
+interface CompetitorCardProps {
+  competitor: Competitor
+}
+
 type LoadingState = {
   [key: string]: boolean
 }
@@ -70,6 +74,62 @@ const CompetitiveAnalysis = () => {
   const [error, setError] = useState('')
   const [analysisComplete, setAnalysisComplete] = useState<AnalysisComplete>({})
 
+  const CompetitorCard: React.FC<CompetitorCardProps> = ({ competitor }) => (
+    <Card className="mb-4">
+      <CardHeader>
+        <CardTitle className="text-lg">{competitor.competitor_name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          {competitor.program_summary && (
+            <div>
+              <h4 className="font-semibold">Program Summary:</h4>
+              <p>{competitor.program_summary}</p>
+            </div>
+          )}
+          {competitor.competitor_positioning && (
+            <div>
+              <h4 className="font-semibold">Market Positioning:</h4>
+              <p>{competitor.competitor_positioning}</p>
+            </div>
+          )}
+          {competitor.competitor_rewards_benefits && (
+            <div>
+              <h4 className="font-semibold">Rewards & Benefits:</h4>
+              <p>{competitor.competitor_rewards_benefits}</p>
+            </div>
+          )}
+          {competitor.competitor_user_feedback && (
+            <div>
+              <h4 className="font-semibold">User Feedback:</h4>
+              <p>{competitor.competitor_user_feedback}</p>
+            </div>
+          )}
+          {competitor.competitor_strength && (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold text-green-600">Strengths:</h4>
+                <p>{competitor.competitor_strength}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-red-600">Weaknesses:</h4>
+                <p>{competitor.competitor_weakness}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-blue-600">Opportunities:</h4>
+                <p>{competitor.competitor_opportunity}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-orange-600">Threats:</h4>
+                <p>{competitor.competitor_threats}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  )
+
   const runAnalysis = async (endpoint: string, loadingKey: LoadingKey) => {
     setLoading(prev => ({ ...prev, [loadingKey]: true }))
     setError('')
@@ -81,10 +141,14 @@ const CompetitiveAnalysis = () => {
 
       // Construct the full URL using the base URL and the correct endpoint
       const url = `${API_URLS[loadingKey]}${API_ENDPOINTS[loadingKey]}`
+      console.log(`Making request to: ${url}`)
 
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ brand_name: brandName })
       })
       
@@ -108,7 +172,10 @@ const CompetitiveAnalysis = () => {
         const finderUrl = `${API_URLS.finder}${API_ENDPOINTS.finder}`
         const finderResponse = await fetch(finderUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           body: JSON.stringify({ brand_name: brandName })
         })
         if (finderResponse.ok) {
@@ -126,8 +193,6 @@ const CompetitiveAnalysis = () => {
       setLoading(prev => ({ ...prev, [loadingKey]: false }))
     }
   }
-
-  // Rest of the component remains the same...
 
   return (
     <div className="container mx-auto p-4">
