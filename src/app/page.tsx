@@ -1,11 +1,12 @@
-'use client'
+import ApiButton from '@/components/ApiButton'
 
-import CompetitiveAnalysis from '../components/competitive-analysis'
-
-export default function Home(): JSX.Element {
+export default function Home() {
   return (
-    <main className="min-h-screen p-8">
-      <CompetitiveAnalysis />
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+        <h1 className="text-4xl font-bold mb-8">API Button Demo</h1>
+        <ApiButton />
+      </div>
     </main>
   )
 }
