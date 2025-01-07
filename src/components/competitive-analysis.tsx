@@ -6,8 +6,41 @@ import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Loader2 } from 'lucide-react'
 
+type Competitor = {
+  competitor_name: string
+  program_summary?: string
+  competitor_positioning?: string
+  competitor_rewards_benefits?: string
+  competitor_user_feedback?: string
+  competitor_strength?: string
+  competitor_weakness?: string
+  competitor_opportunity?: string
+  competitor_threats?: string
+}
+
+type LoadingState = {
+  [key: string]: boolean
+}
+
+type AnalysisComplete = {
+  [key: string]: boolean
+}
+
+type ApiUrls = {
+  finder?: string
+  summarizer?: string
+  rewards?: string
+  positioning?: string
+  feedback?: string
+  swot?: string
+  compSummary?: string
+  opportunities?: string
+}
+
+type LoadingKey = keyof ApiUrls
+
 // API URLs for each service
-const API_URLS = {
+const API_URLS: ApiUrls = {
   finder: process.env.NEXT_PUBLIC_COMPETITOR_FINDER_URL,
   summarizer: process.env.NEXT_PUBLIC_PROGRAM_SUMMARIZER_URL,
   rewards: process.env.NEXT_PUBLIC_REWARDS_ANALYZER_URL,
@@ -20,12 +53,12 @@ const API_URLS = {
 
 const CompetitiveAnalysis = () => {
   const [brandName, setBrandName] = useState('')
-  const [competitors, setCompetitors] = useState([])
-  const [loading, setLoading] = useState({})
+  const [competitors, setCompetitors] = useState<Competitor[]>([])
+  const [loading, setLoading] = useState<LoadingState>({})
   const [error, setError] = useState('')
-  const [analysisComplete, setAnalysisComplete] = useState({})
+  const [analysisComplete, setAnalysisComplete] = useState<AnalysisComplete>({})
 
-  const runAnalysis = async (endpoint, loadingKey) => {
+  const runAnalysis = async (endpoint: string, loadingKey: LoadingKey) => {
     setLoading(prev => ({ ...prev, [loadingKey]: true }))
     setError('')
     
@@ -70,7 +103,7 @@ const CompetitiveAnalysis = () => {
       
       return data
     } catch (err) {
-      const errorMessage = err.message || 'Unknown error occurred'
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
       console.error(`Error in ${loadingKey}:`, errorMessage)
       setError(`Error in ${loadingKey}: ${errorMessage}`)
     } finally {
@@ -78,7 +111,7 @@ const CompetitiveAnalysis = () => {
     }
   }
 
-  const CompetitorCard = ({ competitor }) => (
+  const CompetitorCard = ({ competitor }: { competitor: Competitor }) => (
     <Card className="mb-4">
       <CardHeader>
         <CardTitle className="text-lg">{competitor.competitor_name}</CardTitle>
