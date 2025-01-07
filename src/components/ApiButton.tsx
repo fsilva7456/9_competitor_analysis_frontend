@@ -2,13 +2,12 @@
 
 import React, { useState } from 'react';
 import { Button } from '../components/ui/button';
-import { Alert, AlertDescription } from '../components/ui/alert';
 
 const ApiButton = () => {
   // State to manage loading and response
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Function to handle the API call
   const handleClick = async () => {
@@ -39,9 +38,9 @@ const ApiButton = () => {
       </Button>
 
       {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <div className="p-4 text-sm text-red-500 bg-red-50 rounded-md border border-red-200">
+          {error}
+        </div>
       )}
 
       {response && (
