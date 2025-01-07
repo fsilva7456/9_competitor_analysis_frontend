@@ -1,4 +1,4 @@
-import ApiButton from '@/components/ApiButton'
+import ApiButton from '../components/ApiButton'
 
 export default function Home() {
   return (
